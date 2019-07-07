@@ -1,0 +1,10 @@
+{
+    "name": "guillermoandrae/fisher-etl",
+    "description": "Syncs tables",
+    "license": "MIT",
+    "require": {
+        "php": "^7.2",
+        "mnapoli/bref": "^0.4.1",
+        "guillermoandrae/fisher": "^0.1.0"
+    }
+}
