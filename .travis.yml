@@ -1,0 +1,21 @@
+language: generic
+dist: xenial
+before_install:
+  - phpenv global 7.2
+  - travis_wait composer start-db > /dev/null &
+install:
+  - pip install --user awscli
+  - pip install --user aws-sam-cli
+script:
+  - composer install --optimize-autoloader
+  - composer test
+  - composer package
+deploy:
+  provider: script
+  script: composer deploy
+  skip_cleanup: true
+  on:
+    repo: guillermoandrae/fisher-sync
+env:
+  global:
+  - AWS_DEFAULT_REGION=us-east-1

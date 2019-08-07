@@ -4,7 +4,57 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
-        "mnapoli/bref": "^0.4.1",
-        "guillermoandrae/fisher": "^0.1.0"
-    }
+        "bref/bref": "^0.4.1",
+        "guillermoandrae/fisher": "*",
+        "aws/aws-sdk-php": "^3.104"
+    },
+    "autoload": {
+        "psr-4": {
+            "Guillermoandrae\\Fisher\\": "src/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.1",
+        "squizlabs/php_codesniffer": "^3.4"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "GuillermoandraeTest\\Fisher\\": "tests/"
+        }
+    },
+    "scripts": {
+        "start-db": [
+            "mkdir ./database",
+            "wget --directory-prefix=./database https://s3-us-west-2.amazonaws.com/dynamodb-local/dynamodb_local_latest.zip",
+            "unzip ./database/dynamodb_local_latest.zip -d database",
+            "nohup java -Djava.library.path=./database/DynamoDBLocal_lib -jar ./database/DynamoDBLocal.jar -sharedDb &"
+        ],
+        "stop-db": [
+            "kill -9 `pgrep -f DynamoDB`",
+            "rm -rf ./database",
+            "rm -f ./shared-local-instance.db"
+        ],
+        "restart-db": [
+            "@stop-db",
+            "@start-db"
+        ],        
+        "check-style": [
+            "phpcbf --standard=PSR2 --extensions=php src tests",
+            "phpcs --standard=PSR2 --extensions=php src tests"            
+        ],
+        "test": [
+            "@check-style",
+            "phpunit --coverage-text --coverage-clover=./clover.xml"
+        ],
+        "test-html": [
+            "@check-style",
+            "phpunit --coverage-html report"
+        ],
+        "package": [
+            "sam package --output-template-file .stack.yaml --s3-bucket fisher-sync"
+        ],
+        "deploy": [
+            "sam deploy --template-file .stack.yaml --capabilities CAPABILITY_IAM --stack-name fisher-sync"
+        ]
+    }    
 }

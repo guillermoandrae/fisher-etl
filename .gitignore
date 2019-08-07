@@ -1,1 +1,7 @@
 vendor
+clover.xml
+.phpunit.result.cache
+.stack.yaml
+database
+shared-local-instance.db
+report
