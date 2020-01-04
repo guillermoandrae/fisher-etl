@@ -1,10 +1,11 @@
 <?php declare(strict_types=1);
 
-require __DIR__.'/vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
-use Aws\DynamoDb\Marshaler;
 use Aws\DynamoDb\DynamoDbClient;
+use Aws\DynamoDb\Marshaler;
 use Guillermoandrae\Fisher\Db\DynamoDb\DynamoDbAdapter;
+use Guillermoandrae\Fisher\Sync;
 
 // environment configuration
 set_time_limit(3000);
@@ -18,7 +19,7 @@ lambda(function (array $event) {
     $adapter = new DynamoDbAdapter(
         new DynamoDbClient([
             'region' => 'us-east-1',
-            'version'  => 'latest',
+            'version' => 'latest',
         ]),
         new Marshaler()
     );
