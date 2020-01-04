@@ -44,8 +44,13 @@ final class Sync
     {
         if ($this->adapter->useTable(NEW_TABLE_NAME)->tableExists()) {
             $this->adapter->useTable(NEW_TABLE_NAME)->deleteTable();
+            sleep(10);
         }
-        $this->adapter->useTable(NEW_TABLE_NAME)->createTable([]);
+        $this->adapter->useTable(NEW_TABLE_NAME)->createTable([
+            'source' => ['type' => 'S', 'keyType' => 'HASH'],
+            'createdAt' => ['type' => 'N', 'keyType' => 'RANGE'],
+        ]);
+        sleep(10);
     }
     
     public function extract(): CollectionInterface
